@@ -11,3 +11,6 @@ bundles
 dist
 **/*.egg-info
 .vscode
+.Trashes
+.metadata_never_index
+boot_out.txt

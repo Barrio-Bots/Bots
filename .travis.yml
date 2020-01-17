@@ -44,5 +44,5 @@ install:
 script:
   - pylint ./JeremyC/Main/main.py
   - ([[ ! -d "examples" ]] || pylint --disable=missing-docstring,invalid-name,bad-whitespace examples/*.py)
-  - circuitpython-build-bundles --filename_prefix main --library_location .
+  - circuitpython-build-bundles --filename_prefix main --library_location ./JeremyC
   - cd docs && sphinx-build -E -W -b html . _build/html && cd ..

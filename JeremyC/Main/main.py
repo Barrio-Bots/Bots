@@ -1,33 +1,35 @@
+#!/usr/bin/env python
+""" Main bot module to be compiled down to MicroPython """
+
 from digitalio import DigitalInOut, Pull, Direction
 from adafruit_crickit import crickit
 import board
 
 # Two onboard CPX buttons for input (low level saves memory)
-button_a = DigitalInOut(board.BUTTON_A)
-button_a.direction = Direction.INPUT
-button_a.pull = Pull.DOWN
+BUTTON_A = DigitalInOut(board.BUTTON_A)
+BUTTON_A.direction = Direction.INPUT
+BUTTON_A.pull = Pull.DOWN
 
-button_b = DigitalInOut(board.BUTTON_B)
-button_b.direction = Direction.INPUT
-button_b.pull = Pull.DOWN
+BUTTON_B = DigitalInOut(board.BUTTON_B)
+BUTTON_B.direction = Direction.INPUT
+BUTTON_B.pull = Pull.DOWN
 
-# Create one motor on seesaw motor port #1
-motor = crickit.dc_motor_1
-
+""" Create one motor on seesaw motor port #1 """
+MOTOR = crickit.dc_motor_1
 
 def start_motor():
+    """ Helper function to start motor """
     print("Button A pressed, go!")
-    motor.throttle = 1.0  # full speed!
-
+    MOTOR.throttle = 1.0  # full speed!
 
 def stop_motor():
+    """ Helper function to stop motor """
     print("Button B pressed, stop!")
-    motor.throttle = 0    # stop!
+    MOTOR.throttle = 0    # stop!
 
 
 while True:
-    if button_a.value:
-    	start_motor()
-
-    if button_b.value:
-    	stop_motor()
+    if BUTTON_A.value:
+        start_motor()
+    elif BUTTON_B.value:
+        stop_motor()

@@ -2,8 +2,8 @@
 """ Main bot module to be compiled down to MicroPython """
 
 from digitalio import DigitalInOut, Pull, Direction
-from adafruit_crickit import crickit
 import board
+from adafruit_crickit import crickit
 
 # Two onboard CPX buttons for input (low level saves memory)
 BUTTON_A = DigitalInOut(board.BUTTON_A)

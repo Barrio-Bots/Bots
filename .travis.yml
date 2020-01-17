@@ -19,7 +19,7 @@ env:
 
 deploy:
   - provider: releases
-    api_key: "$GITHUB_TOKEN"
+    token: "$GITHUB_TOKEN"
     file_glob: true
     file: "$TRAVIS_BUILD_DIR/bundles/*"
     skip_cleanup: true
@@ -29,7 +29,7 @@ deploy:
   # TODO: Use 'travis encrypt --com -r adafruit/<repo slug>' to generate
   #       the encrypted password for adafruit-travis. Paste result below.
   - provider: pypi
-    user: adafruit-travis
+    username: adafruit-travis
     password:
       secure: #-- PASTE ENCRYPTED PASSWORD HERE --#
     on:

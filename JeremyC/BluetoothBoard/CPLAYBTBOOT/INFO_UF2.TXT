@@ -1,0 +1,4 @@
+UF2 Bootloader 0.2.11-8-g2c13fd5-dirty lib/nrfx (v1.1.0-1-g096e770) lib/tinyusb (legacy-755-g55874813) s140 6.1.1
+Model: Adafruit Circuit Playground nRF52840
+Board-ID: nRF52840-CircuitPlayground-revD
+Date: Jul 13 2019

@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+""" Main bot module to be compiled down to MicroPython """
+
 # Circuit Playground Bluefruit Rover
 # Use with the Adafruit BlueFruit LE Connect app
 # Works with CircuitPython 5.0.0-beta.0 and later

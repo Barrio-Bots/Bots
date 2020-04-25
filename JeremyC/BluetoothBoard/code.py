@@ -1,32 +1,28 @@
+# CircuitPython NeoPixel Color Picker Example
+
+import board
+import neopixel
 from adafruit_ble import BLERadio
 from adafruit_ble.advertising.standard import ProvideServicesAdvertisement
 from adafruit_ble.services.nordic import UARTService
-
 from adafruit_bluefruit_connect.packet import Packet
-from adafruit_bluefruit_connect.button_packet import ButtonPacket
+from adafruit_bluefruit_connect.color_packet import ColorPacket
 
 ble = BLERadio()
-uart = UARTService()
-advertisement = ProvideServicesAdvertisement(uart)
+uart_server = UARTService()
+advertisement = ProvideServicesAdvertisement(uart_server)
+
+pixels = neopixel.NeoPixel(board.NEOPIXEL, 10, brightness=0.1)
 
 while True:
+    # Advertise when not connected.
     ble.start_advertising(advertisement)
     while not ble.connected:
         pass
-
-    # Now we're connected
+    ble.stop_advertising()
 
     while ble.connected:
-        if uart.in_waiting:
-            packet = Packet.from_stream(uart)
-            if isinstance(packet, ButtonPacket):
-                if packet.pressed:
-                    if packet.button == ButtonPacket.BUTTON_1:
-                        # The 1 button was pressed.
-                        print("1 button pressed!")
-                    elif packet.button == ButtonPacket.UP:
-                        # The UP button was pressed.
-                        print("UP button pressed!")
-
-    # If we got here, we lost the connection. Go up to the top and start
-    # advertising again and waiting for a connection.
+        packet = Packet.from_stream(uart_server)
+        if isinstance(packet, ColorPacket):
+            print(packet.color)
+            pixels.fill(packet.color)

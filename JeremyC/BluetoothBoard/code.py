@@ -19,7 +19,7 @@ from adafruit_ble.services.nordic import UARTService
 from adafruit_bluefruit_connect.packet import Packet
 # Only the packet classes that are imported will be known to Packet.
 from adafruit_bluefruit_connect.button_packet import ButtonPacket
-from adafruit_bluefruit_connect.COLOR_packet import COLORPacket
+from adafruit_bluefruit_connect.color_packet import ColorPacket
 
 # Prep the status LED on the CPB
 RED_LED = digitalio.DigitalInOut(board.D13)
@@ -44,7 +44,7 @@ PURPLE = (120, 0, 160)
 YELLOW = (100, 100, 0)
 AQUA = (0, 100, 100)
 BLACK = (0, 0, 0)
-COLOR = PURPLE  # current NeoPixel COLOR
+COLOR = PURPLE  # current NeoPixel color
 NEOPIXELS.fill(COLOR)
 
 print("BLE Turtle Rover")
@@ -64,9 +64,9 @@ while True:
             # Packet is arriving.
             RED_LED.value = False  # turn off red LED
             PACKET = Packet.from_stream(UART_SERVICE)
-            if isinstance(PACKET, COLORPacket):
+            if isinstance(PACKET, ColorPacket):
                 # Change the COLOR.
-                COLOR = PACKET.COLOR
+                COLOR = PACKET.color
                 NEOPIXELS.fill(COLOR)
 
             # do this when buttons are pressed

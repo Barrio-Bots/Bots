@@ -19,24 +19,24 @@ from adafruit_ble.services.nordic import UARTService
 from adafruit_bluefruit_connect.packet import Packet
 # Only the packet classes that are imported will be known to Packet.
 from adafruit_bluefruit_connect.button_packet import ButtonPacket
-from adafruit_bluefruit_connect.color_packet import ColorPacket
+from adafruit_bluefruit_connect.COLOR_packet import COLORPacket
 
 # Prep the status LED on the CPB
-red_led = digitalio.DigitalInOut(board.D13)
-red_led.direction = digitalio.Direction.OUTPUT
+RED_LED = digitalio.DigitalInOut(board.D13)
+RED_LED.direction = digitalio.Direction.OUTPUT
 
-ble = BLERadio()
-uart_service = UARTService()
-advertisement = ProvideServicesAdvertisement(uart_service)
+BLE = BLERadio()
+UART_SERVICE = UARTService()
+ADVERTISEMENT = ProvideServicesAdvertisement(UART_SERVICE)
 
 # motor setup
-motor_1 = crickit.dc_motor_1
-motor_2 = crickit.dc_motor_2
+MOTOR_ONE = crickit.dc_motor_1
+MOTOR_TWO = crickit.dc_motor_2
 
 FWD = 1.0
 REV = -1.0
 
-neopixels = neopixel.NeoPixel(board.NEOPIXEL, 10, brightness=0.1)
+NEOPIXELS = neopixel.NeoPixel(board.NEOPIXEL, 10, brightness=0.1)
 RED = (200, 0, 0)
 GREEN = (0, 200, 0)
 BLUE = (0, 0, 200)
@@ -44,82 +44,82 @@ PURPLE = (120, 0, 160)
 YELLOW = (100, 100, 0)
 AQUA = (0, 100, 100)
 BLACK = (0, 0, 0)
-color = PURPLE  # current NeoPixel color
-neopixels.fill(color)
+COLOR = PURPLE  # current NeoPixel COLOR
+NEOPIXELS.fill(COLOR)
 
 print("BLE Turtle Rover")
 print("Use Adafruit Bluefruit app to connect")
 while True:
-    neopixels[0] = BLACK
-    neopixels.show()
-    ble.start_advertising(advertisement)
-    while not ble.connected:
+    NEOPIXELS[0] = BLACK
+    NEOPIXELS.show()
+    BLE.start_advertising(ADVERTISEMENT)
+    while not BLE.connected:
         # Wait for a connection.
         pass
     # set a pixel blue when connected
-    neopixels[0] = BLUE
-    neopixels.show()
-    while ble.connected:
-        if uart_service.in_waiting:
+    NEOPIXELS[0] = BLUE
+    NEOPIXELS.show()
+    while BLE.connected:
+        if UART_SERVICE.in_waiting:
             # Packet is arriving.
-            red_led.value = False  # turn off red LED
-            packet = Packet.from_stream(uart_service)
-            if isinstance(packet, ColorPacket):
-                # Change the color.
-                color = packet.color
-                neopixels.fill(color)
+            RED_LED.value = False  # turn off red LED
+            PACKET = Packet.from_stream(UART_SERVICE)
+            if isinstance(PACKET, COLORPacket):
+                # Change the COLOR.
+                COLOR = PACKET.COLOR
+                NEOPIXELS.fill(COLOR)
 
             # do this when buttons are pressed
-            if isinstance(packet, ButtonPacket) and packet.pressed:
-                red_led.value = True  # blink to show packet has been received
-                if packet.button == ButtonPacket.UP:
-                    neopixels.fill(color)
-                    motor_1.throttle = FWD
-                    motor_2.throttle = FWD
-                elif packet.button == ButtonPacket.DOWN:
-                    neopixels.fill(color)
-                    motor_1.throttle = REV
-                    motor_2.throttle = REV
-                elif packet.button == ButtonPacket.RIGHT:
-                    color = YELLOW
-                    neopixels.fill(color)
-                    motor_2.throttle = 0
-                    motor_1.throttle = FWD
-                elif packet.button == ButtonPacket.LEFT:
-                    color = YELLOW
-                    neopixels.fill(color)
-                    motor_2.throttle = FWD
-                    motor_1.throttle = 0
-                elif packet.button == ButtonPacket.BUTTON_1:
-                    neopixels.fill(RED)
-                    motor_1.throttle = 0.0
-                    motor_2.throttle = 0.0
+            if isinstance(PACKET, ButtonPacket) and PACKET.pressed:
+                RED_LED.value = True  # blink to show packet has been received
+                if PACKET.button == ButtonPacket.UP:
+                    NEOPIXELS.fill(COLOR)
+                    MOTOR_ONE.throttle = FWD
+                    MOTOR_TWO.throttle = FWD
+                elif PACKET.button == ButtonPacket.DOWN:
+                    NEOPIXELS.fill(COLOR)
+                    MOTOR_ONE.throttle = REV
+                    MOTOR_TWO.throttle = REV
+                elif PACKET.button == ButtonPacket.RIGHT:
+                    COLOR = YELLOW
+                    NEOPIXELS.fill(COLOR)
+                    MOTOR_TWO.throttle = 0
+                    MOTOR_ONE.throttle = FWD
+                elif PACKET.button == ButtonPacket.LEFT:
+                    COLOR = YELLOW
+                    NEOPIXELS.fill(COLOR)
+                    MOTOR_TWO.throttle = FWD
+                    MOTOR_ONE.throttle = 0
+                elif PACKET.button == ButtonPacket.BUTTON_1:
+                    NEOPIXELS.fill(RED)
+                    MOTOR_ONE.throttle = 0.0
+                    MOTOR_TWO.throttle = 0.0
                     time.sleep(0.5)
-                    neopixels.fill(color)
-                elif packet.button == ButtonPacket.BUTTON_2:
-                    color = GREEN
-                    neopixels.fill(color)
-                elif packet.button == ButtonPacket.BUTTON_3:
-                    color = BLUE
-                    neopixels.fill(color)
-                elif packet.button == ButtonPacket.BUTTON_4:
-                    color = PURPLE
-                    neopixels.fill(color)
+                    NEOPIXELS.fill(COLOR)
+                elif PACKET.button == ButtonPacket.BUTTON_2:
+                    COLOR = GREEN
+                    NEOPIXELS.fill(COLOR)
+                elif PACKET.button == ButtonPacket.BUTTON_3:
+                    COLOR = BLUE
+                    NEOPIXELS.fill(COLOR)
+                elif PACKET.button == ButtonPacket.BUTTON_4:
+                    COLOR = PURPLE
+                    NEOPIXELS.fill(COLOR)
             # do this when some buttons are released
-            elif isinstance(packet, ButtonPacket) and not packet.pressed:
-                if packet.button == ButtonPacket.UP:
-                    neopixels.fill(RED)
-                    motor_1.throttle = 0
-                    motor_2.throttle = 0
-                if packet.button == ButtonPacket.DOWN:
-                    neopixels.fill(RED)
-                    motor_1.throttle = 0
-                    motor_2.throttle = 0
-                if packet.button == ButtonPacket.RIGHT:
-                    neopixels.fill(RED)
-                    motor_1.throttle = 0
-                    motor_2.throttle = 0
-                if packet.button == ButtonPacket.LEFT:
-                    neopixels.fill(RED)
-                    motor_1.throttle = 0
-                    motor_2.throttle = 0
+            elif isinstance(PACKET, ButtonPacket) and not PACKET.pressed:
+                if PACKET.button == ButtonPacket.UP:
+                    NEOPIXELS.fill(RED)
+                    MOTOR_ONE.throttle = 0
+                    MOTOR_TWO.throttle = 0
+                if PACKET.button == ButtonPacket.DOWN:
+                    NEOPIXELS.fill(RED)
+                    MOTOR_ONE.throttle = 0
+                    MOTOR_TWO.throttle = 0
+                if PACKET.button == ButtonPacket.RIGHT:
+                    NEOPIXELS.fill(RED)
+                    MOTOR_ONE.throttle = 0
+                    MOTOR_TWO.throttle = 0
+                if PACKET.button == ButtonPacket.LEFT:
+                    NEOPIXELS.fill(RED)
+                    MOTOR_ONE.throttle = 0
+                    MOTOR_TWO.throttle = 0
